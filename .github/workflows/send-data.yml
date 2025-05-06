@@ -1,24 +1,47 @@
-name: Send Data to URL
+name: Fetch and Save JSON from API
 
 on:
   push:
-    paths:
-      - '**/*.py'  # Trigger on changes to Python files only
+    branches:
+      - main  # Trigger the workflow when there is a push to the `main` branch
 
 jobs:
-  send_data:
+  fetch-and-save-json:
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2 
-        
-      - name: Send data to URL with fixed name and id
-        run: |
-          # Set fixed values for name and id
-          name="ErfanNourbakhsh-AliHassani"  # Example name, replace with your own
-          id="01231033907029-01231033907009"  # Example ID, replace with your own
 
-          # Send data using curl
-          curl -X POST "https://shams.sython.ir/test.php" \
-            -d "name=$name" \
-            -d "id=$id"
+    steps:
+      # Step 1: Checkout the code in the repository
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Step 2: Install jq for parsing JSON
+      - name: Install jq
+        run: sudo apt-get install jq
+
+      # Step 3: Fetch JSON from API and save to a txt file
+      - name: Fetch JSON from API and save to file
+        run: |
+          # Make the GET request using curl
+          response=$(curl -s https://shams.sython.ir/test.php)
+
+          # Check if the response was valid JSON
+          echo "$response" | jq empty
+          if [ $? -eq 0 ]; then
+            echo "Valid JSON received, saving to response_data.txt"
+            # Save the JSON response to a file
+            echo "$response" > response_data.txt
+          else
+            echo "Error: Received invalid JSON"
+            echo '{"error": "Failed to fetch valid data"}' > response_data.txt
+          fi
+
+      # Step 4: Commit and push the new file
+      - name: Commit and push the new file
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add response_data.txt
+          git commit -m "Add fetched JSON data to response_data.txt"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Used for authentication to push changes
