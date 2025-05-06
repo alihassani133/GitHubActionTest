@@ -44,4 +44,4 @@ jobs:
           git commit -m "Add fetched JSON data to response_data.txt"
           git push
         env:
-            MY_CUSTOM_TOKEN: ${{ secrets.MY_TEST }}  # Your custom token
+            MY_CUSTOM_TOKEN: ${{ secrets.MY_TEST }}@github.com/alihassani133/GitHubActionTest.git  # Your custom token
