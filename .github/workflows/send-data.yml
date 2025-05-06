@@ -44,4 +44,4 @@ jobs:
           git commit -m "Add fetched JSON data to response_data.txt"
           git push
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Used for authentication to push changes
+          GITHUB_TOKEN: ${{ secrets.MY_TEST }}  # Used for authentication to push changes
