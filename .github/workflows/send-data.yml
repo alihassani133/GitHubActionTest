@@ -10,13 +10,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
-
+        uses: actions/checkout@v2 
+        
       - name: Send data to URL with fixed name and id
         run: |
           # Set fixed values for name and id
-          name="AliHassani-ErfanNourbakhsh"  # Example name, replace with your own
-          id="01231033907008-01231033907029"  # Example ID, replace with your own
+          name="ErfanNourbakhsh-AliHassani"  # Example name, replace with your own
+          id="01231033907029-01231033907009"  # Example ID, replace with your own
 
           # Send data using curl
           curl -X POST "https://shams.sython.ir/test.php" \
