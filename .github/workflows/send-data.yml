@@ -35,13 +35,13 @@ jobs:
             echo '{"error": "Failed to fetch valid data"}' > response_data.txt
           fi
 
-      # Step 4: Commit and push the new file
+      # Step 4: Commit and push the new file using a Personal Access Token (PAT)
       - name: Commit and push the new file
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
           git add response_data.txt
           git commit -m "Add fetched JSON data to response_data.txt"
-          git push
-        env:
-            MY_CUSTOM_TOKEN: ${{ secrets.MY_TEST }}@github.com/alihassani133/GitHubActionTest.git  # Your custom token
+          
+          # Push using the Personal Access Token (PAT)
+          git push https://x-access-token:${{ secrets.MY_TEST }}@github.com/alihassani133/GitHubActionTest.git
